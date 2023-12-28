@@ -130,11 +130,11 @@ res = {
 
 ## Responses
 
-- The server will respond with a HTTP status code 200 if the ticker is found and the range is set correctly.
-- The server will respond with a HTTP status code 400 if the payload is not formatted correctly.
-- The server will respond with a HTTP status code 404 if the ticker is not valid/not found.
-- The server will respond with a HTTP status code 416 if the range is outside the bound of stored dates.
-- The server will respond with a HTTP status code 422 if the range input is incorrectly formatted.
+- HTTP 200: Success! The ticker is valid, and the date range is correctly set.
+- HTTP 400: Bad Request. The JSON payload format is incorrect.
+- HTTP 404: Not Found. The ticker does not exist or is invalid.
+- HTTP 416: Range Not Satisfiable. The specified date range exceeds the available data.
+- HTTP 422: Unprocessable Entity. The date range format is incorrect.
 
 ## Constraints
 
