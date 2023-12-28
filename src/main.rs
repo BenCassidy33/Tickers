@@ -36,7 +36,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/checkHealth", get(StatusCode::OK))
-        .route("/getPricePointJson", get(get_price_points_json))
+        .route("/getPricePointsJson", get(get_price_points_json))
         .layer(TraceLayer::new_for_http())
         .with_state(conn);
 

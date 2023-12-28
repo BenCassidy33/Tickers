@@ -16,8 +16,9 @@ pub async fn get_price_points_json(
     Json(payload): Json<RequestType>,
 ) -> Result<(http::StatusCode, Json<ResultType>), http::StatusCode> {
     // might be good candidate for transaction
-
     debug!("TOKEN REQUESTED: {}", payload.ticker_name);
+
+    //check if range is acceptable, if not: return 416
 
     let ticker_id = sqlx::query_as!(
         TickerId,
