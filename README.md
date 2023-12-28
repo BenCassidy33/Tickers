@@ -158,3 +158,4 @@ res = {
 - Dates and prices are constrined from June 1st 2023 to December 1st 2023
 - Some dates may be missing
 - Range queries must follow the ISO 8601 time format (eg. "YYYY-MM-DDTHH:MM:SS" / "%Y-%m-%dT%H:%M:%S")
+- All times must be set to 4:00:00 / Market Closing
