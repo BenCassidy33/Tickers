@@ -1,0 +1,4 @@
+/target
+.env
+migrations/data
+migrations/.keep
