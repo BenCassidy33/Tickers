@@ -1,35 +1,46 @@
+use std::sync::Mutex;
+
 mod database;
 mod models;
-mod schema;
+mod routes;
 
 #[allow(unused)]
-use axum::{
-    http::StatusCode,
-    routing::{get, post},
-    Json, Router,
+use {
+    axum::{
+        http::StatusCode,
+        routing::{get, post},
+        Json, Router,
+    },
+    database::establish_conn,
+    dotenvy::dotenv,
+    models::*,
+    routes::get_price_points_json,
+    serde::{Deserialize, Serialize},
+    sqlx::PgPool,
+    std::sync::Arc,
+    tower_http::trace::TraceLayer,
 };
-use database::establish_conn;
-use diesel::prelude::*;
-use models::*;
-#[allow(unused)]
-use serde::{Deserialize, Serialize};
 
 #[tokio::main]
 async fn main() {
-    use self::schema::tickers::dsl::*;
+    dotenv().ok();
 
-    let conn = &mut establish_conn();
-    let res = tickers
-        .filter(ticker_name.eq("nvda"))
-        .limit(5)
-        .select(Ticker::as_select())
-        .load(conn)
-        .expect("coult not load ticker");
+    tracing_subscriber::fmt()
+        .with_max_level(tracing::Level::DEBUG)
+        .init();
 
-    println!("Found: {}", res.len());
+    let port = std::env::var("PORT").unwrap_or("3000".to_string());
+    let addr = format!("127.0.0.1:{}", port);
 
-    // let app = Router::new().route("/checkHealth", get(StatusCode::OK));
-    //
-    // let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-    // axum::serve(listener, app).await.unwrap();
+    let mut conn = database::establish_conn().await;
+
+    let app = Router::new()
+        .route("/checkHealth", get(StatusCode::OK))
+        .route("/getPricePointJson", get(get_price_points_json))
+        .layer(TraceLayer::new_for_http())
+        .with_state(conn);
+
+    println!("Listening on {}", &addr);
+    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
+    axum::serve(listener, app).await.unwrap();
 }
