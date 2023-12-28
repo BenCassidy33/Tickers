@@ -38,9 +38,44 @@ Others:
 
 The data was fetched and scraped from polygon.io using python and uploaded to a locally hosted postgres database. The program takies in a json query to /getPricePointsJson
 
-```javascript
-// example query:
+Query Format
 
+```javascript
+{
+  'ticker_name': 'TICK',
+  'range': {
+        'start': 'start_date',
+        'end': 'end_date'
+    }
+}
+
+```
+
+When propted correctly, the server will respond with this format:
+
+```javascript
+// response from server:
+{
+  'ticker_name': 'TICK',
+  'range': {
+        'start': 'start_date',
+        'end': 'end_date'
+    },
+    'prices': [
+        {
+            "id": 0, // price date determined by database
+            "ticker_id": 1, // id of the refernced ticker symbol as determined by the database
+            "date", "price_date", // the date of the closing price
+            "price", 100.00 // price as a float
+        },
+        ...
+    ]
+}
+```
+
+Example Query:
+
+```javascript
 const input = {
   ticker_name: 'AAPL', // set the ticker name to AAPL or Apple
 };
@@ -95,10 +130,11 @@ res = {
 
 ## Responses
 
-- Service will respond with a HTTP status code 200 if the ticker is found and the range is set correctly
-- Service will respond with a HTTP status code 404 if the ticker is not valid/not found,
-- Service will respond with a HTTP status code 416 if the range is outside the bound of stored dates
-- Service will respond with a HTTP status code 422 if the range input is incorrectly formatted
+- The server will respond with a HTTP status code 200 if the ticker is found and the range is set correctly.
+- The server will respond with a HTTP status code 400 if the payload is not formatted correctly.
+- The server will respond with a HTTP status code 404 if the ticker is not valid/not found.
+- The server will respond with a HTTP status code 416 if the range is outside the bound of stored dates.
+- The server will respond with a HTTP status code 422 if the range input is incorrectly formatted.
 
 ## Constraints
 
