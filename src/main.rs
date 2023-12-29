@@ -1,5 +1,3 @@
-use std::sync::Mutex;
-
 mod database;
 mod models;
 mod routes;
@@ -32,7 +30,7 @@ async fn main() {
     let port = std::env::var("PORT").unwrap_or("3000".to_string());
     let addr = format!("127.0.0.1:{}", port);
 
-    let mut conn = database::establish_conn().await;
+    let conn = database::establish_conn().await;
 
     let app = Router::new()
         .route("/checkHealth", get(StatusCode::OK))

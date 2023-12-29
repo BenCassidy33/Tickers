@@ -1,4 +1,7 @@
-use tracing::{debug, field::debug};
+
+use tracing::debug;
+
+
 
 #[allow(unused)]
 use {
@@ -18,8 +21,6 @@ pub async fn get_price_points_json(
     // might be good candidate for transaction
     debug!("TOKEN REQUESTED: {}", payload.ticker_name);
 
-    //check if range is acceptable, if not: return 416
-
     let ticker_id = sqlx::query_as!(
         TickerId,
         "SELECT id FROM tickers WHERE ticker_name = $1",
@@ -33,6 +34,13 @@ pub async fn get_price_points_json(
     debug!("TOKEN ID: {}", ticker_id.id);
 
     if payload.range.is_some() {
+        let start = payload.range.unwrap().start;
+        let end = payload.range.unwrap().end;
+
+        if start > end {
+            return Err(http::StatusCode::RANGE_NOT_SATISFIABLE);
+        }
+
         let price_points = sqlx::query_as!(
             PricePoint,
             "SELECT * FROM price_points WHERE ticker_id = $1 and date >= $2 and date <= $3",
@@ -51,7 +59,7 @@ pub async fn get_price_points_json(
                 http::StatusCode::OK,
                 Json(ResultType {
                     ticker_name: payload.ticker_name,
-                    range: payload.range.unwrap(),
+                    range: payload.range,
                     prices: price_points,
                 }),
             ));
@@ -73,7 +81,7 @@ pub async fn get_price_points_json(
                 http::StatusCode::OK,
                 Json(ResultType {
                     ticker_name: payload.ticker_name,
-                    range: payload.range.unwrap(),
+                    range: None,
                     prices: price_points,
                 }),
             ));

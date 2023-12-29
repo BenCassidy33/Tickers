@@ -2,6 +2,27 @@ use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::prelude::FromRow;
 
+pub mod globals {
+    use chrono::NaiveDateTime;
+    use lazy_static::lazy_static;
+    pub static TIME_FORMAT: &'static str = "%Y-%m-%dT%H:%M:%S";
+
+    lazy_static! {
+        pub static ref START_DATE: NaiveDateTime =
+            NaiveDateTime::parse_from_str("2023-06-01T04:00:00", TIME_FORMAT).unwrap();
+        pub static ref END_DATE: NaiveDateTime =
+            NaiveDateTime::parse_from_str("2023-12-01T04:00:00", TIME_FORMAT).unwrap();
+    }
+}
+
+#[allow(unused)]
+pub enum DateValidation {
+    Valid,
+    InvalidFormatting,
+    InvalidRange,
+    InvalidDateSequence,
+}
+
 #[derive(FromRow, Debug, Serialize, Deserialize)]
 pub struct Ticker {
     pub id: i32,
@@ -38,6 +59,6 @@ pub struct DateRange {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ResultType {
     pub ticker_name: String,
-    pub range: DateRange,
+    pub range: Option<DateRange>,
     pub prices: Vec<PricePoint>,
 }

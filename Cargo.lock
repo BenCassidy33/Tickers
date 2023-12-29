@@ -1174,6 +1174,7 @@ dependencies = [
  "axum",
  "chrono",
  "dotenvy",
+ "lazy_static",
  "serde",
  "sqlx",
  "sqlx-core",
