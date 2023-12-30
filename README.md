@@ -51,7 +51,7 @@ Query Format
 
 ```
 
-When propted correctly, the server will respond with this format:
+When prompted correctly, the server will respond with this format:
 
 ```javascript
 // response from server:
@@ -65,8 +65,8 @@ When propted correctly, the server will respond with this format:
         {
             "id": 0, // price date determined by database
             "ticker_id": 1, // id of the refernced ticker symbol as determined by the database
-            "date", "price_date", // the date of the closing price
-            "price", 100.00 // price as a float
+            "date": "price_date", // the date of the closing price
+            "price": 100.00 // price as a float
         },
         ...
     ]

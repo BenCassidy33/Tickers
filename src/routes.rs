@@ -1,7 +1,5 @@
-
+use axum::response::Html;
 use tracing::debug;
-
-
 
 #[allow(unused)]
 use {
@@ -13,6 +11,11 @@ use {
     sqlx::{postgres::PgPoolOptions, PgPool},
     std::sync::Arc,
 };
+
+pub async fn index() -> Html<String> {
+    let data = std::fs::read_to_string("views/index.html").unwrap();
+    Html(data)
+}
 
 pub async fn get_price_points_json(
     State(conn): State<PgPool>,

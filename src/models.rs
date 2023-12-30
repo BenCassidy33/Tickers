@@ -43,11 +43,11 @@ pub struct PricePoint {
     pub date: NaiveDateTime,
     pub price: f64,
 }
-
 #[derive(Debug, Serialize, Deserialize)]
-pub struct RequestType {
+pub struct ResultType {
     pub ticker_name: String,
     pub range: Option<DateRange>,
+    pub prices: Vec<PricePoint>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
@@ -57,8 +57,7 @@ pub struct DateRange {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct ResultType {
+pub struct RequestType {
     pub ticker_name: String,
     pub range: Option<DateRange>,
-    pub prices: Vec<PricePoint>,
 }

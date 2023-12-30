@@ -1,6 +1,7 @@
 mod database;
 mod models;
 mod routes;
+mod templates;
 
 #[allow(unused)]
 use {
@@ -12,7 +13,7 @@ use {
     database::establish_conn,
     dotenvy::dotenv,
     models::*,
-    routes::get_price_points_json,
+    routes::{get_price_points_json, index},
     serde::{Deserialize, Serialize},
     sqlx::PgPool,
     std::sync::Arc,
@@ -33,6 +34,7 @@ async fn main() {
     let conn = database::establish_conn().await;
 
     let app = Router::new()
+        .route("/", get(index))
         .route("/checkHealth", get(StatusCode::OK))
         .route("/getPricePointsJson", get(get_price_points_json))
         .layer(TraceLayer::new_for_http())
