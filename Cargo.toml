@@ -6,7 +6,6 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-askama = "0.12.1"
 axum = "0.7.2"
 chrono = { version = "0.4", features = ["serde"]}
 dotenvy = "0.15"
@@ -14,7 +13,7 @@ serde = { version = "1.0.193", features = ["derive"] }
 sqlx = {version = "0.7.3", features = ["postgres", "runtime-tokio", "chrono", "time", "macros"]}
 sqlx-core = "0.7.3"
 tokio = { version = "1.35.1", features = ["full"] }
-tower-http = { version = "0.5.0", features = ["trace"]}
+tower-http = { version = "0.5.0", features = ["full"]}
 tracing = "0.1.37"
 tracing-subscriber = "0.3.16"
 lazy_static = "1.4.0"

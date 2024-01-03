@@ -1,9 +1,4 @@
-
-
 use sqlx::{postgres::PgPoolOptions, PgPool};
-
-
-
 use {dotenvy::dotenv, std::env};
 
 pub async fn establish_conn() -> PgPool {

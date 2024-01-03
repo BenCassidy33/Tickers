@@ -1,7 +1,6 @@
 use axum::response::Html;
 use tracing::debug;
 
-#[allow(unused)]
 use {
     crate::models::{DateRange, PricePoint, RequestType, ResultType, TickerId},
     axum::http,
@@ -21,9 +20,6 @@ pub async fn get_price_points_json(
     State(conn): State<PgPool>,
     Json(payload): Json<RequestType>,
 ) -> Result<(http::StatusCode, Json<ResultType>), http::StatusCode> {
-    // might be good candidate for transaction
-    debug!("TOKEN REQUESTED: {}", payload.ticker_name);
-
     let ticker_id = sqlx::query_as!(
         TickerId,
         "SELECT id FROM tickers WHERE ticker_name = $1",

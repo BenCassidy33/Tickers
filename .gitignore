@@ -2,3 +2,6 @@
 .env
 migrations/data
 migrations/.keep
+Dockerfile
+.dockerignore
+todos.md

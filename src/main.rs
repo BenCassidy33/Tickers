@@ -1,10 +1,11 @@
+mod api;
+mod backend;
 mod database;
+mod frontend;
 mod models;
-mod routes;
-mod templates;
 
-#[allow(unused)]
 use {
+    api::{get_price_points_json, index},
     axum::{
         http::StatusCode,
         routing::{get, post},
@@ -13,7 +14,6 @@ use {
     database::establish_conn,
     dotenvy::dotenv,
     models::*,
-    routes::{get_price_points_json, index},
     serde::{Deserialize, Serialize},
     sqlx::PgPool,
     std::sync::Arc,
@@ -35,8 +35,9 @@ async fn main() {
 
     let app = Router::new()
         .route("/", get(index))
-        .route("/checkHealth", get(StatusCode::OK))
-        .route("/getPricePointsJson", get(get_price_points_json))
+        .route("/api/checkHealth", get(StatusCode::OK))
+        .route("/api/pricePoints", get(get_price_points_json))
+        //.merge(frontend::frontend_router())
         .layer(TraceLayer::new_for_http())
         .with_state(conn);
 
