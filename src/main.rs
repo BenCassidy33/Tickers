@@ -8,15 +8,9 @@ use {
     api::{get_price_points_json, index},
     axum::{
         http::StatusCode,
-        routing::{get, post},
-        Json, Router,
+        routing::{get}, Router,
     },
-    database::establish_conn,
     dotenvy::dotenv,
-    models::*,
-    serde::{Deserialize, Serialize},
-    sqlx::PgPool,
-    std::sync::Arc,
     tower_http::trace::TraceLayer,
 };
 

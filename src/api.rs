@@ -2,13 +2,11 @@ use axum::response::Html;
 use tracing::debug;
 
 use {
-    crate::models::{DateRange, PricePoint, RequestType, ResultType, TickerId},
+    crate::models::{PricePoint, RequestType, ResultType, TickerId},
     axum::http,
     axum::{extract::State, Json},
-    chrono::{NaiveDateTime, Utc},
     sqlx::Row,
-    sqlx::{postgres::PgPoolOptions, PgPool},
-    std::sync::Arc,
+    sqlx::{PgPool},
 };
 
 pub async fn index() -> Html<String> {
